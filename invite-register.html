@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en"  style="height: 100%">
+<head>
+    <meta charset="UTF-8">
+    <title>有币贷-注册</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="index.css">
+    <script type="text/javascript" charset="utf-8" src="//g.alicdn.com/sd/nch5/index.js?t=2015052012"></script>
+    <style>
+        ._nc .stage{
+            padding:  0;
+        }
+        ._nc .stage1 .slider {
+
+            left:0;
+            right: 0;
+        }
+    </style>
+</head>
+<body style="color: white;height: 100%;"  class="fullscreen-background" >
+
+
+
+
+
+<div style="margin-top: 2rem;text-align: center"><img style="width:120px;height: 42px; " src="./image/logo.png" ></div>
+<div class="center" style="  display: flex; flex-direction: column;  width: 90%;">
+
+
+    <div id="__nc" >
+        <div id="nc"></div>
+    </div>
+
+    <script>
+
+        var aliyunCaptchaResult=null
+        var nc_token = ["FFFF0N00000000006E34", (new Date()).getTime(), Math.random()].join(':');
+        var nc=NoCaptcha.init({
+            renderTo: '#nc',
+            appkey: 'FFFF0N00000000006E34',
+            scene: 'nc_register_h5',
+            token: nc_token,
+            trans: {"key1": "code200"},
+            elementID: ["usernameID"],
+            is_Opt: 0,
+            language: "cn",
+            timeout: 10000,
+            retryTimes: 5,
+            errorTimes: 5,
+            inline:false,
+            apimap: {
+                // 'analyze': '//a.com/nocaptcha/analyze.jsonp',
+                // 'uab_Url': '//aeu.alicdn.com/js/uac/909.js',
+            },
+            bannerHidden:false,
+            initHidden:false,
+            callback: function (data) {
+//                window.console && console.log(nc_token)
+//                window.console && console.log(data.csessionid)
+//                window.console && console.log(data.sig)
+
+                aliyunCaptchaResult=data
+            },
+            error: function (s) {
+            }
+        });
+        NoCaptcha.setEnabled(true);
+        nc.reset();//请务必确保这里调用一次reset()方法
+
+        NoCaptcha.upLang('cn', {
+            'LOADING':"加载中...",//加载
+            'SLIDER_LABEL': "请向右滑动验证",//等待滑动
+            'CHECK_Y':"验证通过",//通过
+            'ERROR_TITLE':"非常抱歉，这出错了...",//拦截
+            'CHECK_N':"验证未通过", //准备唤醒二次验证
+            'OVERLAY_INFORM':"经检测你当前操作环境存在风险，请输入验证码",//二次验证
+            'TIPS_TITLE':"验证码错误，请重新输入"//验证码输错时的提示
+        });
+    </script>
+    <form >
+
+
+
+
+        <input name='phoneNumber' required type="number" autofocus maxlength="11" placeholder="请输入手机号码">
+
+
+        <div class="line"></div>
+
+
+
+
+
+        <div style="display: flex;justify-content: space-between;align-items: center"><input maxlength="6" name='captcha'
+                                                                                             style="width: 60%"
+                                                                                             type="number" required
+                                                                                             placeholder="请填写验证码"><span
+                style="height: 1rem;width: 1px; background: white;"></span>
+            <button  type="button"  id='getCaptchaButton' style="width:30%;text-align: center;font-size: 0.8rem">获取验证码</button>
+        </div>
+        <div class="line"></div>
+        <input name="inviteCode" type="text" maxlength="6" placeholder="请输入邀请码(可选)">
+
+        <div class="line"></div>
+
+
+        <button type="submit"  id="submitButton" style=" width:100%;margin-top:2rem;background:rgba(71,83,245,1);">注册
+        </button>
+    </form>
+</div>
+
+
+<div class="bottom" style="width: 100%"><img style="width:100%; " src="./image/advertisementbanner2.png" ></div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+
+<script>
+
+
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    $('input[name=inviteCode]').val(getParameterByName('inviteCode'))
+
+
+    var host="http://api.ubidai.io";
+    $.ajaxSetup({
+        headers: {
+
+           "X-Client-Id":"173fd104d933432bae87ad8d097441ba",
+
+        }
+    });
+
+
+    jQuery.fn.serializeObject = function () {
+        var results = {},
+            arr = this.serializeArray();
+        for (var i = 0, len = arr.length; i < len; i++) {
+            obj = arr[i];
+            //Check if results have a property with given name
+            if (results.hasOwnProperty(obj.name)) {
+                //Check if given object is an array
+                if (!results[obj.name].push) {
+                    results[obj.name] = [results[obj.name]];
+                }
+                results[obj.name].push(obj.value || '');
+            } else {
+                results[obj.name] = obj.value || '';
+            }
+        }
+        return results;
+    }
+
+    
+
+
+    var counter
+    $('#getCaptchaButton').click(function () {
+
+        var phoneNumber=$('input[name=phoneNumber]').val();
+
+        if(!phoneNumber){
+
+            alert('请输入手机号码');
+
+            $(['input[name=phoneNumber]']).focus();
+            return
+        }
+
+
+        if(!aliyunCaptchaResult){
+
+            alert('请先进行滑动验证')
+            return
+        }
+
+
+
+        clearInterval(counter);
+
+
+        var count=60;
+        $('#getCaptchaButton').prop("disabled",true).text(count+'s')
+
+        counter= setInterval(function () {
+            count--;
+            $('#getCaptchaButton').text(count+'s')
+
+            if(count===0){
+
+                $('#getCaptchaButton').text('获取验证码').prop("disabled",false)
+                clearInterval(counter);
+
+            }
+        },1000)
+
+
+
+
+        var data={phoneNumber:phoneNumber}
+        data.aliyunCaptchaSessionId=aliyunCaptchaResult.csessionid
+        data.aliyunCaptchaSig=aliyunCaptchaResult.sig
+        data.aliyunCaptchaNCToken=nc_token
+        data.aliyunCaptchaScene="nc_register_h5"
+
+
+        $.get(host+"/sms/register", data,function (data) {
+
+
+            if(data.code===0){
+
+            }else{
+                alert(data.message)
+                $('#getCaptchaButton').text('获取验证码').prop("disabled",false)
+                clearInterval(counter);
+            }
+
+        });
+    })
+
+
+
+//    function  loadImageCaptcha() {
+//
+//        $.get(host+"/captcha",{channel:'register'} ,function (data) {
+//
+//
+//
+//            if(data.code===0){
+//
+//                $('#getImageCaptchaButton').attr('src',data.data.imageBase64)
+//                $('[name=imageCaptchaKey]').val(data.data.key)
+//
+//
+//            }else{
+//
+//
+//                alert(data.message)
+//            }
+//
+//
+//        });
+//    }
+
+
+   $(function () {
+//       loadImageCaptcha();
+   })
+    $('#getImageCaptchaButton').click(function () {
+
+        loadImageCaptcha();
+
+
+    })
+    $('form').submit(function(e) {
+
+        e.preventDefault();
+        var data =$(this).serializeObject()
+
+        $.post(host+"/user",data,  function (data) {
+
+            if(data.code===0){
+
+
+
+                location.href="download-app.html"
+            }else{
+
+
+                alert(data.message)
+                $('#getCaptchaButton').text('获取验证码').prop("disabled",false)
+                clearInterval(counter);
+            }
+        });
+
+
+    })
+
+
+</script>
+
+
+</body>
+</html>

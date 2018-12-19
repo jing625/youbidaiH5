@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+    <meta charset="UTF-8">
+    <title>有币贷-下载APP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="download.css">
+
+</head>
+<body style="color: white;height: 100%;" class="fullscreen-background">
+
+<div style="margin-top: 2rem;text-align: center"><img style="width:70px;height: 70px; " src="./image/icon_LOGO.png">
+</div>
+<p style="text-align: center;font-size: 18px;margin: 10px 0;">有币贷app</p>
+<p style="text-align: center;width: 70%;margin: 0 auto;font-size: 14px;">不卖币抵押贷款还信用卡网贷抄底神器，大家都在用</p>
+
+<div class="bottom" style=" display: flex; flex-direction: column; bottom: 5%;  width: 90%;">
+
+
+    <a download id="android" href="http://youbidai.sealgame.cn/download/ubidai_official_110.apk">
+        <button style=" width:100%;margin-top:1rem;background:#4753F5;">下载安卓 APP</button>
+    </a>
+    <a id="download-ios" onclick="return jumpToIosDownloadPage();"
+       href="itms-services://?action=download-manifest&url=https://m.ubidai.io/app/ios-download.plist">
+        <button style=" width:100%;margin-top:1rem;background:#FF6056;">下载IOS APP</button>
+    </a>
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+
+    var ua = navigator.userAgent.toLowerCase();
+    var isWeixin = ua.indexOf('micromessenger') != -1;
+    if (isWeixin) {
+
+        $('#android').click(function () {
+
+            alert('请点击右上角按钮，使用浏览器打开');
+
+        })
+
+
+    }
+    function jumpToIosDownloadPage() {
+        location.href = "./download-ios.html"
+    }
+</script>
+
+
+</body>
+</html>
